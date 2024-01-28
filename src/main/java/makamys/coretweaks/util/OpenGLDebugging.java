@@ -7,7 +7,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Consumer;
 
-import cpw.mods.fml.common.FMLCommonHandler;
 import org.apache.commons.io.FileUtils;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -88,9 +87,6 @@ public class OpenGLDebugging {
             new GLproperty(GL11.GL_RENDER_MODE, "GL_RENDER_MODE", "glRenderMode() setting", "current", "glGetIntegerv()"), new GLproperty(GL11.GL_SELECTION_BUFFER_POINTER, "GL_SELECTION_BUFFER_POINTER", "Pointer to selection buffer", "select", "glGetPointerv()"), new GLproperty(GL11.GL_SELECTION_BUFFER_SIZE, "GL_SELECTION_BUFFER_SIZE", "Size of selection buffer", "select", "glGetIntegerv()"), new GLproperty(GL11.GL_FEEDBACK_BUFFER_POINTER, "GL_FEEDBACK_BUFFER_POINTER", "Pointer to feedback buffer", "feedback", "glGetPointerv()"), new GLproperty(GL11.GL_FEEDBACK_BUFFER_SIZE, "GL_FEEDBACK_BUFFER_SIZE", "Size of feedback buffer", "feedback", "glGetIntegerv()"), new GLproperty(GL11.GL_FEEDBACK_BUFFER_TYPE, "GL_FEEDBACK_BUFFER_TYPE", "Type of feedback buffer", "feedback", "glGetIntegerv()"), };
     
     public static void dumpToFile(Consumer<Consumer<String>> dumper, String fileName) {
-        if (FMLCommonHandler.instance().findContainerFor("angelica") != null) {
-            return;
-        }
         List<String> lines = new ArrayList<>();
         dumper.accept((line) -> lines.add(line));
         try {
@@ -110,9 +106,6 @@ public class OpenGLDebugging {
     }
     
     public static void dumpState(Consumer<String> printer) {
-        if (FMLCommonHandler.instance().findContainerFor("angelica") != null) {
-            return;
-        }
         for (int i = 0; i < instance.propertyList.length; ++i) {
             printer.accept(instance.propertyList[i].name + ":" + getPropertyAsString(i) + " (" + instance.propertyList[i].description + ")");
         }
@@ -145,9 +138,6 @@ public class OpenGLDebugging {
     }
 
     public static void dumpType(String type, Consumer<String> printer) {
-        if (FMLCommonHandler.instance().findContainerFor("angelica") != null) {
-            return;
-        }
         for (int i = 0; i < instance.propertyList.length; ++i) {
             if (instance.propertyList[i].category.equals(type)) {
                 printer.accept(instance.propertyList[i].name + ":");
@@ -158,9 +148,6 @@ public class OpenGLDebugging {
     }
 
     private static String getPropertyAsString(int propertyListIndex) {
-        if (FMLCommonHandler.instance().findContainerFor("angelica") != null) {
-            return "";
-        }
         int gLconstant = instance.propertyList[propertyListIndex].gLconstant;
         if (instance.propertyList[propertyListIndex].fetchCommand.equals("glIsEnabled()")) {
             return "" + GL11.glIsEnabled(gLconstant);
