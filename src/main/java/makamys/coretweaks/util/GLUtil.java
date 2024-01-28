@@ -4,6 +4,8 @@
 
 package makamys.coretweaks.util;
 
+import cpw.mods.fml.common.FMLCommonHandler;
+
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL15.*;
 import static org.lwjgl.opengl.GL30.*;
@@ -13,6 +15,9 @@ import static makamys.coretweaks.CoreTweaks.LOGGER;
 public class GLUtil {
     
     public static void resetState() {
+        if (FMLCommonHandler.instance().findContainerFor("angelica") != null) {
+            return;
+        }
         LOGGER.debug("Attempting to reset GL state.");
         LOGGER.debug("GL state before restore:");
         OpenGLDebugging.dumpState();

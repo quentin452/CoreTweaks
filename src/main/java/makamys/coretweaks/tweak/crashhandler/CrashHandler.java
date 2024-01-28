@@ -10,6 +10,7 @@ import java.util.List;
 
 import com.google.common.collect.Multimap;
 
+import cpw.mods.fml.common.FMLCommonHandler;
 import cpw.mods.fml.common.LoadController;
 import cpw.mods.fml.common.Loader;
 import cpw.mods.fml.relauncher.ReflectionHelper;
@@ -35,13 +36,7 @@ public class CrashHandler {
         } catch(Exception e) {
             exceptions.add(e);
         }
-        
-        try {
-            GLUtil.resetState();
-        } catch(Exception e) {
-            exceptions.add(e);
-        }
-        
+
         try {
             boolean isDrawing = ReflectionHelper.getPrivateValue(Tessellator.class, Tessellator.instance, "isDrawing", "field_78415_z");
             if(isDrawing) {
@@ -79,6 +74,14 @@ public class CrashHandler {
                 LOGGER.warn("Something went wrong while attempting to restore state after the crash (this is not related to the above crash!): " + e.getMessage());
             }
         }
+        if (FMLCommonHandler.instance().findContainerFor("angelica") != null) {
+            return;
+        }
+            try {
+                GLUtil.resetState();
+            } catch(Exception e) {
+                exceptions.add(e);
+            }
     }
     
     public static void createCrashReport(CrashReport crashReporter) {
